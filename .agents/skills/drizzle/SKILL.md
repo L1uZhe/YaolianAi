@@ -125,11 +125,7 @@ The relational API generates complex lateral joins with `json_build_array` that 
 
 ```typescript
 // ✅ Good
-const [result] = await this.db
-  .select()
-  .from(agents)
-  .where(eq(agents.id, id))
-  .limit(1);
+const [result] = await this.db.select().from(agents).where(eq(agents.id, id)).limit(1);
 return result;
 
 // ❌ Bad: relational API
