@@ -13,7 +13,6 @@ import { INBOX_SESSION_ID } from '@/const/session';
 import { featureFlagsSelectors, useServerConfigStore } from '@/store/serverConfig';
 
 import { selectors, useStore } from '../store';
-import AutoGenerateAvatar from './AutoGenerateAvatar';
 import AutoGenerateInput from './AutoGenerateInput';
 import AutoGenerateSelect from './AutoGenerateSelect';
 import BackgroundSwatches from './BackgroundSwatches';
@@ -81,20 +80,20 @@ const AgentMeta = memo(() => {
 
   const metaData: FormGroupItemType = {
     children: [
-      {
-        children: (
-          <AutoGenerateAvatar
-            background={background}
-            canAutoGenerate={hasSystemRole}
-            loading={loadingState?.['avatar']}
-            onGenerate={() => autocompleteMeta('avatar')}
-          />
-        ),
-        label: t('settingAgent.avatar.title'),
-        layout: 'horizontal',
-        minWidth: undefined,
-        name: 'avatar',
-      },
+      // {
+      //   children: (
+      //     <AutoGenerateAvatar
+      //       background={background}
+      //       canAutoGenerate={hasSystemRole}
+      //       loading={loadingState?.['avatar']}
+      //       onGenerate={() => autocompleteMeta('avatar')}
+      //     />
+      //   ),
+      //   label: t('settingAgent.avatar.title'),
+      //   layout: 'horizontal',
+      //   minWidth: undefined,
+      //   name: 'avatar',
+      // },
       {
         children: <BackgroundSwatches onValuesChange={(c) => setBackground(c)} />,
         label: t('settingAgent.backgroundColor.title'),

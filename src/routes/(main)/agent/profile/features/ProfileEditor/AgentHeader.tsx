@@ -1,16 +1,13 @@
 'use client';
 
 import { EDITOR_DEBOUNCE_TIME } from '@lobechat/const';
-import { Flexbox, Icon, Input, Skeleton, Tooltip } from '@lobehub/ui';
+import { Flexbox, Input } from '@lobehub/ui';
 import { useDebounceFn } from 'ahooks';
 import { message } from 'antd';
 import isEqual from 'fast-deep-equal';
-import { PaletteIcon } from 'lucide-react';
-import { memo, Suspense, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import EmojiPicker from '@/components/EmojiPicker';
-import BackgroundSwatches from '@/features/AgentSetting/AgentMeta/BackgroundSwatches';
 import { useAgentStore } from '@/store/agent';
 import { agentSelectors } from '@/store/agent/selectors';
 import { useFileStore } from '@/store/file';
@@ -97,57 +94,7 @@ const AgentHeader = memo(() => {
         e.preventDefault();
       }}
     >
-      {/* Avatar Section */}
-      <EmojiPicker
-        allowUpload
-        allowDelete={!!meta.avatar}
-        loading={uploading}
-        locale={locale}
-        shape={'square'}
-        size={72}
-        value={meta.avatar}
-        background={
-          meta.backgroundColor && meta.backgroundColor !== 'rgba(0,0,0,0)'
-            ? meta.backgroundColor
-            : undefined
-        }
-        customTabs={[
-          {
-            label: (
-              <Tooltip title={t('settingAgent.backgroundColor.title', { ns: 'setting' })}>
-                <Icon icon={PaletteIcon} size={{ size: 20, strokeWidth: 2.5 }} />
-              </Tooltip>
-            ),
-            render: () => (
-              <Flexbox padding={8} width={332}>
-                <Suspense
-                  fallback={
-                    <Flexbox gap={8}>
-                      <Skeleton.Button block style={{ height: 38 }} />
-                      <Skeleton.Button block style={{ height: 38 }} />
-                    </Flexbox>
-                  }
-                >
-                  <BackgroundSwatches
-                    gap={8}
-                    shape={'square'}
-                    size={38}
-                    value={meta.backgroundColor}
-                    onChange={handleBackgroundColorChange}
-                  />
-                </Suspense>
-              </Flexbox>
-            ),
-            value: 'background',
-          },
-        ]}
-        popupProps={{
-          placement: 'bottomLeft',
-        }}
-        onChange={handleAvatarChange}
-        onDelete={handleAvatarDelete}
-        onUpload={handleAvatarUpload}
-      />
+      {/* Avatar Section - Hidden */}
       {/* Title Section */}
       <Flexbox flex={1} style={{ minWidth: 0 }}>
         <Input
