@@ -7,10 +7,28 @@ import { useSession } from '@/libs/better-auth/auth-client';
 import { useUserStore } from '@/store/user';
 import { type LobeUser } from '@/types/user';
 
+const isMockDevUser = import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCK_DEV_USER === '1';
+
 /**
  * Sync Better-Auth session state to Zustand store
  */
 const UserUpdater = memo(() => {
+  // Dev bypass: inject mock user directly, skip real session
+  useEffect(() => {
+    if (!isMockDevUser) return;
+    useUserStore.setState({
+      isLoaded: true,
+      isSignedIn: true,
+      user: {
+        avatar: '',
+        email: 'dev@localhost',
+        fullName: 'Dev User',
+        id: 'DEV_USER',
+        username: 'dev',
+      } as LobeUser,
+    });
+  }, []);
+
   const { data: session, isPending, error } = useSession();
 
   const isLoaded = !isPending;
@@ -19,11 +37,13 @@ const UserUpdater = memo(() => {
   const betterAuthUser = session?.user;
   const useStoreUpdater = createStoreUpdater(useUserStore);
 
-  useStoreUpdater('isLoaded', isLoaded);
-  useStoreUpdater('isSignedIn', isSignedIn);
+  useStoreUpdater('isLoaded', isMockDevUser ? true : isLoaded);
+  useStoreUpdater('isSignedIn', isMockDevUser ? true : isSignedIn);
 
   // Sync user data from Better-Auth session to Zustand store
   useEffect(() => {
+    if (isMockDevUser) return;
+
     if (betterAuthUser) {
       const userAvatar = useUserStore.getState().user?.avatar;
 

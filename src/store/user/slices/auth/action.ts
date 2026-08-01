@@ -73,7 +73,8 @@ export class UserAuthActionImpl {
   };
 
   openLogin = async (): Promise<void> => {
-    // Skip if already on a login page (/signin, /signup)
+    // Dev bypass: skip login redirect when mock user is enabled
+    if (import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCK_DEV_USER === '1') return;
     const pathname = location.pathname;
     if (pathname.startsWith('/signin') || pathname.startsWith('/signup')) {
       return;

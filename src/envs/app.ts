@@ -24,6 +24,7 @@ const APP_URL = process.env.APP_URL
     : process.env.NODE_ENV === 'development'
       ? 'http://localhost:3010'
       : 'http://localhost:3210';
+//服务器地址
 
 // INTERNAL_APP_URL is used for server-to-server calls to bypass CDN/proxy
 // Falls back to APP_URL if not set
