@@ -5,10 +5,12 @@ export interface LoadI18nNamespaceModuleParams {
   ns: string;
 }
 
-export const loadI18nNamespaceModule = async (params: LoadI18nNamespaceModuleParams) => {
-  const { defaultLang, normalizeLocale, lng, ns } = params;
+const shouldUseDefaultModules = (lng: string) => lng === 'en-US';
 
-  if (lng === defaultLang) return import(`@/locales/default/${ns}`);
+export const loadI18nNamespaceModule = async (params: LoadI18nNamespaceModuleParams) => {
+  const { normalizeLocale, lng, ns } = params;
+
+  if (shouldUseDefaultModules(lng)) return import(`@/locales/default/${ns}`);
 
   try {
     return import(`@/../locales/${normalizeLocale(lng)}/${ns}.json`);

@@ -16,7 +16,7 @@ export const translation = async (ns: NS = 'common', hl: string) => {
 
   const loadTranslations = async () => {
     // Keep the same fallback rule as `src/locales/create.ts`:
-    // - DEFAULT_LANG loads from `src/locales/default`
+    // - zh-CN loads from `locales/zh-CN/*.json`
     // - other languages load from `locales/<lng>/*.json`, and fallback to default if missing
     return loadI18nNamespaceModuleWithFallback({
       defaultLang: DEFAULT_LANG,

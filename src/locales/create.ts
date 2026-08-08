@@ -4,11 +4,11 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next';
 import { isRtlLang } from 'rtl-detect';
 
-// Sync load default language (en-US) from JSON to avoid Suspense on first render.
+// Sync load default language (zh-CN) from JSON to avoid Suspense on first render.
 // locales/default/*.ts is for type inference only, not used as runtime values.
-import chat from '@/../locales/en-US/chat.json';
-import common from '@/../locales/en-US/common.json';
-import error from '@/../locales/en-US/error.json';
+import chat from '@/../locales/zh-CN/chat.json';
+import common from '@/../locales/zh-CN/common.json';
+import error from '@/../locales/zh-CN/error.json';
 import { DEFAULT_LANG } from '@/const/locale';
 import { getDebugConfig } from '@/envs/debug';
 import { normalizeLocale } from '@/locales/resources';
@@ -56,7 +56,7 @@ export const createI18nNext = (lang?: string) => {
 
         initAsync,
 
-        // Preload default language (en-US) synchronously to avoid Suspense on first render
+        // Preload default language (zh-CN) synchronously to avoid Suspense on first render
         resources: {
           [DEFAULT_LANG]: defaultResources,
         },

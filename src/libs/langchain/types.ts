@@ -7,4 +7,5 @@ export type LangChainLoaderType =
   | 'text'
   | 'latex'
   | 'csv'
+  | 'excel'
   | 'epub';

@@ -12,12 +12,14 @@ const localeLoaders = import.meta.glob<{ default: Record<string, string> }>('/lo
 const getDefaultKey = (ns: string) => `/src/locales/default/${ns}.ts`;
 const getLocaleKey = (lng: string, ns: string) => `/locales/${lng}/${ns}.json`;
 
+const shouldUseDefaultModules = (lng: string) => lng === 'en-US';
+
 export const loadI18nNamespaceModule = async (
   params: LoadI18nNamespaceModuleParams,
 ): Promise<{ default: Record<string, string> }> => {
-  const { defaultLang, normalizeLocale, lng, ns } = params;
+  const { normalizeLocale, lng, ns } = params;
 
-  if (lng === defaultLang) {
+  if (shouldUseDefaultModules(lng)) {
     const key = getDefaultKey(ns);
     const load = defaultLoaders[key];
     if (!load) throw new Error(`Missing default namespace: ${ns}`);

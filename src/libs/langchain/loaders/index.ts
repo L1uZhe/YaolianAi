@@ -8,6 +8,7 @@ import { CodeLoader } from './code';
 import { CsVLoader } from './csv';
 import { DocxLoader } from './docx';
 import { EPubLoader } from './epub';
+import { ExcelLoader } from './excel';
 import { LatexLoader } from './latex';
 import { MarkdownLoader } from './markdown';
 import { PdfLoader } from './pdf';
@@ -63,6 +64,10 @@ export class ChunkingLoader {
           return await CsVLoader(fileBlob);
         }
 
+        case 'excel': {
+          return await ExcelLoader(content);
+        }
+
         case 'epub': {
           return await EPubLoader(content);
         }
@@ -101,6 +106,10 @@ export class ChunkingLoader {
 
     if (filename.endsWith('csv')) {
       return 'csv';
+    }
+
+    if (filename.endsWith('xlsx') || filename.endsWith('xls')) {
+      return 'excel';
     }
 
     if (filename.endsWith('epub')) {

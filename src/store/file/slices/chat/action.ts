@@ -3,6 +3,7 @@ import { t } from 'i18next';
 
 import { notification } from '@/components/AntdStaticMethods';
 import { FILE_UPLOAD_BLACKLIST } from '@/const/file';
+import { documentService } from '@/services/document';
 import { fileService } from '@/services/file';
 import { ragService } from '@/services/rag';
 import { UPLOAD_NETWORK_ERROR } from '@/services/upload';
@@ -55,6 +56,54 @@ export class FileActionImpl {
     this.#set({ chatUploadFileList: nextValue }, false, `dispatchChatFileList/${payload.type}`);
   };
 
+  attachChatFiles = async (items: FileListItem[]): Promise<void> => {
+    const { dispatchChatUploadFileList } = this.#get();
+    const currentIds = new Set(this.#get().chatUploadFileList.map((item) => item.id));
+    const remoteFiles: UploadFileItem[] = [];
+
+    for (const item of items) {
+      if (item.sourceType !== 'file' || item.fileType === 'custom/folder') continue;
+
+      const fileId = await this.resolveAttachFileId(item);
+      if (!fileId || currentIds.has(fileId)) continue;
+      currentIds.add(fileId);
+
+      remoteFiles.push(this.toRemoteUploadFileItem(item, fileId));
+    }
+
+    if (remoteFiles.length > 0) {
+      dispatchChatUploadFileList({ files: remoteFiles, type: 'addFiles' });
+    }
+  };
+
+  private resolveAttachFileId = async (item: FileListItem): Promise<string | undefined> => {
+    if (!item.id.startsWith('docs_')) return item.id;
+
+    const document = await documentService.getDocumentById(item.id);
+    return document?.fileId ?? undefined;
+  };
+
+  private toRemoteUploadFileItem = (item: FileListItem, fileId: string): UploadFileItem => {
+    const url = item.url ?? undefined;
+    const fileUrl =
+      url && item.id !== fileId && url.includes(item.id)
+        ? url.replace(item.id, fileId)
+        : url;
+
+    return {
+      file: {
+        name: item.name,
+        size: item.size,
+        type: item.fileType,
+      } as File,
+      fileUrl,
+      id: fileId,
+      isRemote: true,
+      previewUrl: fileUrl,
+      status: 'success',
+    };
+  };
+
   removeChatContextSelection = (id: string): void => {
     const next = this.#get().chatContextSelections.filter((item) => item.id !== id);
     this.#set({ chatContextSelections: next }, false, n('removeChatContextSelection'));
@@ -62,9 +111,12 @@ export class FileActionImpl {
 
   removeChatUploadFile = async (id: string): Promise<void> => {
     const { dispatchChatUploadFileList } = this.#get();
+    const item = this.#get().chatUploadFileList.find((file) => file.id === id);
 
     dispatchChatUploadFileList({ id, type: 'removeFile' });
-    await fileService.removeFile(id);
+    if (item && !item.isRemote) {
+      await fileService.removeFile(id);
+    }
   };
 
   startAsyncTask = async (

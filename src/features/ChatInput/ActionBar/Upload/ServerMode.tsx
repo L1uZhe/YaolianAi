@@ -262,7 +262,7 @@ const FileUpload = memo(() => {
       ) : (
         content
       )}
-      <AttachKnowledgeModal open={modalOpen} setOpen={setModalOpen} />
+      <AttachKnowledgeModal mode="attach" open={modalOpen} setOpen={setModalOpen} />
     </Suspense>
   );
 });

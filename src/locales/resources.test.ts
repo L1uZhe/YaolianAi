@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { normalizeLocale } from './resources';
 
 describe('normalizeLocale', () => {
-  it('should return "en-US" when locale is undefined', () => {
-    expect(normalizeLocale()).toBe('en-US');
+  it('should return "zh-CN" when locale is undefined', () => {
+    expect(normalizeLocale()).toBe('zh-CN');
   });
 
   it('should return "zh-CN" when locale is "zh-CN"', () => {
@@ -43,7 +43,7 @@ describe('normalizeLocale', () => {
   });
 
   it('should return the input locale for unknown locales', () => {
-    expect(normalizeLocale('unknown')).toBe('en-US');
+    expect(normalizeLocale('unknown')).toBe('zh-CN');
     expect(normalizeLocale('fr')).toBe('fr-FR');
   });
 });

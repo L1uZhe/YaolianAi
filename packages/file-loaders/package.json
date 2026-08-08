@@ -20,6 +20,10 @@
   "author": "LobeHub <i@lobehub.com>",
   "sideEffects": false,
   "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./excel": "./src/loaders/excel/index.ts"
+  },
   "scripts": {
     "test": "vitest",
     "test:coverage": "vitest --coverage --silent='passed-only'"

@@ -44,6 +44,10 @@ export interface UploadFileItem {
   fileUrl?: string;
   id: string;
   /**
+   * whether the file already exists in the file/knowledge base
+   */
+  isRemote?: boolean;
+  /**
    * blob url for local preview
    * it will use in the file preview before send the message
    */
