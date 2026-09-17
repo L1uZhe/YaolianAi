@@ -110,6 +110,12 @@ vertex-ai-key.json
 CLAUDE.local.md
 .agent/
 
+# WorkBuddy local agent data (memory, session state)
+.workbuddy/
+
+# Local password-reset backups (contain password hashes)
+.password-backup-*.json
+
 # MCP tools
 .serena/**
 
